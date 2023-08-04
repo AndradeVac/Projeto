@@ -1,39 +1,42 @@
-const loginForm = document.getElementById("loginForm");
-const btnSubmit = document.getElementById("btn-Submit");
-const emailInput = document.getElementById("email");
-const passwordInput = document.getElementById("password");
-const emailError = document.getElementById("emailError");
-const passwordError = document.getElementById("passwordError");
-const forgotLink = document.getElementById("forgotLink");
-const createAccountLink = document.getElementById("createAccountLink");
+const formulario = document.querySelector("form");
+const emailInput = document.querySelector("#email");
+const passwordInput = document.querySelector("#password");
 
-loginForm.addEventListener("submit", function (event) {
-    // Reset error messages
-    emailError.style.display = "none";
-    passwordError.style.display = "none";
 
-    // Check email
-    if (!emailInput.value) {
-        emailError.style.display = "block";
-        event.preventDefault(); // Prevent form submission
-    }
+function cadastrar () {
+    
+    fetch ("http://localhost:8080/login",   //----------------------- //endereço onde vai ser acessado como por exemplo "http://localhost:5500/"
+    {
 
-    // Check password
-    if (!passwordInput.value) {
-        passwordError.style.display = "block";
-        event.preventDefault(); // Prevent form submission
-    }
+
+
+        headers: {     // -------------------->             //Cabeçario onde vai mandar os json o tipo de conteu e o metodo post
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: "POST",
+
+        body: JSON.stringify({       //----------->  //Convesor para dados
+            email: emailInput.value,
+            senha: passwordInput.value
+          })
+    })
+    .then(function (res) {console.log(res)})
+    .catch(function (res) {console.log(res)})
+}
+
+function limpar () {
+    emailInput.value = ""
+    passwordInput.value = ""
+    
+};
+
+
+formulario.addEventListener('submit', function (event) {
+  event.preventDefault();
+
+
+    cadastrar();
+    limpar();
+
 });
-
-forgotLink.addEventListener("click", function (event) {
-    event.preventDefault();
-    // Coloque o código para lidar com o link de esquecimento de usuário/senha aqui
-    console.log("Link 'Forgot Username / Password?' clicado!");
-});
-
-createAccountLink.addEventListener("click", function (event) {
-    event.preventDefault();
-    // Coloque o código para lidar com o link de criação de conta aqui
-    console.log("Link 'Create your Account' clicado!");
-});
-
